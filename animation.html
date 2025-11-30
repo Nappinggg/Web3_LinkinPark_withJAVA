@@ -69,7 +69,7 @@
   <div class="page-wrap">
     <h2>Анімація елемента на JavaScript</h2>
     <p class="subtitle">
-      Приклад фронтенд‑синтаксису JavaScript: рух, масштабування і керування анімацією за допомогою кнопок.
+      Окрема веб-сторінка з анімованим елементом та керуванням анімацією за допомогою кнопок.
     </p>
 
     <section class="section-card">
@@ -86,8 +86,7 @@
       </div>
 
       <p>
-        Кнопки нижче демонструють роботу обробників подій, доступу до DOM та анімації через
-        <code>requestAnimationFrame</code>.
+        Цей приклад показує анімацію DOM-елемента через JavaScript і керування нею трьома кнопками.
       </p>
     </section>
   </div>
@@ -100,27 +99,30 @@
 </footer>
 
 <script>
+  // Отримуємо елемент і кнопки
   const box = document.getElementById('lp-box');
   const btnStart = document.getElementById('btn-start');
   const btnPause = document.getElementById('btn-pause');
   const btnReset = document.getElementById('btn-reset');
 
+  // Стан анімації
   let animationId;
   let startTime = null;
   let isRunning = false;
 
-  const maxShift = 260;
-  const speed = 0.25;
+  const maxShift = 260; // максимальний зсув вправо (px)
+  const speed = 0.25;   // швидкість руху
 
+  // Функція анімації
   function animate(timestamp) {
     if (!startTime) {
       startTime = timestamp;
     }
 
-    const elapsed = timestamp - startTime;
-    const shift = (elapsed * speed) % (maxShift * 2);
+    const elapsed = timestamp - startTime;             // скільки часу минуло
+    const shift = (elapsed * speed) % (maxShift * 2);  // «коло» вперед-назад
     const distance = shift <= maxShift ? shift : (maxShift * 2 - shift);
-    const scale = 1 + 0.1 * Math.sin(elapsed / 250);
+    const scale = 1 + 0.1 * Math.sin(elapsed / 250);   // легке «дихання»
 
     box.style.transform = `translateX(${distance}px) scale(${scale})`;
 
@@ -129,6 +131,7 @@
     }
   }
 
+  // Кнопка "Старт" — запускає анімацію
   btnStart.addEventListener('click', () => {
     if (!isRunning) {
       isRunning = true;
@@ -137,11 +140,13 @@
     }
   });
 
+  // Кнопка "Пауза" — зупиняє анімацію
   btnPause.addEventListener('click', () => {
     isRunning = false;
     window.cancelAnimationFrame(animationId);
   });
 
+  // Кнопка "Скинути" — повертає блок у початок
   btnReset.addEventListener('click', () => {
     isRunning = false;
     window.cancelAnimationFrame(animationId);
